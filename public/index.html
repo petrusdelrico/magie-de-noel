@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Liste de Noël</title>
+    <meta name="description" content="Créez et partagez votre liste de souhaits pour Noël.">
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- Snow effect overlay -->
+        <div class="snow-overlay"></div>
+
+        <!-- Notification Toast -->
+        <div id="toast" class="toast hidden">Message</div>
+
+        <!-- Login Section -->
+        <section id="login-view" class="view active">
+            <div class="glass-card login-card">
+                <div class="icon-header">
+                    <i class="ph ph-gift"></i>
+                </div>
+                <h1>Magie de Noël</h1>
+                <p>Créez et partagez votre liste de souhaits.</p>
+                <form id="login-form">
+                    <div class="input-group">
+                        <i class="ph ph-user"></i>
+                        <input type="text" id="username-input" placeholder="Entrez votre pseudo" required
+                            autocomplete="off" />
+                    </div>
+                    <button type="submit" class="primary-btn">
+                        <span>Entrer</span>
+                        <i class="ph ph-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Main Dashboard Section -->
+        <section id="dashboard-view" class="view hidden">
+            <header class="app-header glass-nav">
+                <div class="header-left">
+                    <i class="ph-fill ph-tree-evergreen tree-icon"></i>
+                    <h2>Noël de <span id="current-user-display"></span></h2>
+                </div>
+                <div class="header-right" style="display: flex; gap: 0.5rem; align-items: center;">
+                    <button id="my-reservations-btn" class="secondary-btn"
+                        style="padding: 0.5rem 1rem; border-color: transparent;">Mes Réservations</button>
+                    <button id="logout-btn" class="icon-btn" title="Se déconnecter">
+                        <i class="ph ph-sign-out"></i>
+                    </button>
+                </div>
+            </header>
+
+            <main class="dashboard-content">
+                <!-- Search Bar -->
+                <div class="search-container glass-card">
+                    <form id="search-form" class="search-form">
+                        <i class="ph ph-magnifying-glass"></i>
+                        <input type="text" id="search-input" placeholder="Chercher la liste d'un ami (ex: Alice)"
+                            autocomplete="off" />
+                        <button type="submit" class="secondary-btn">Chercher</button>
+                    </form>
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <button id="show-all-users-btn" class="secondary-btn"
+                            style="width: auto; display: inline-flex; align-items: center; gap: 0.5rem; background: transparent; border-color: transparent;">
+                            <i class="ph ph-users"></i> Voir tout l'annuaire
+                        </button>
+                    </div>
+                </div>
+
+                <!-- All Users Area (Hidden by default) -->
+                <div id="all-users-area" class="list-area hidden">
+                    <div class="list-header">
+                        <button id="back-to-dashboard-from-directory" class="icon-btn text-btn">
+                            <i class="ph ph-arrow-left"></i> Retour
+                        </button>
+                        <h3>Annuaire des membres</h3>
+                    </div>
+                    <div class="glass-card" style="padding: 1rem;">
+                        <ul id="directory-list" class="wish-list">
+                            <!-- Users will be injected here -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- My Reservations Area (Hidden by default) -->
+                <div id="my-reservations-area" class="list-area hidden">
+                    <div class="list-header">
+                        <button id="back-to-dashboard-from-reservations" class="icon-btn text-btn">
+                            <i class="ph ph-arrow-left"></i> Retour
+                        </button>
+                        <h3>Ce que j'offre</h3>
+                    </div>
+                    <div class="glass-card" style="padding: 1rem;">
+                        <ul id="reservations-list" class="wish-list">
+                            <!-- Reservations will be injected here -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- My List Area -->
+                <div id="my-list-area" class="list-area active">
+                    <div class="list-header">
+                        <h3>Ma Liste de Souhaits</h3>
+                    </div>
+
+                    <form id="add-item-form" class="glass-card add-form">
+                        <input type="text" id="item-name" placeholder="Qu'est-ce qui vous ferait plaisir ?" required
+                            autocomplete="off" />
+                        <button type="submit" class="primary-btn add-btn">
+                            <i class="ph ph-plus"></i>
+                            Ajouter
+                        </button>
+                    </form>
+
+                    <ul id="my-wishes" class="wish-list">
+                        <!-- Wishes will be injected here -->
+                    </ul>
+                </div>
+
+                <!-- Other User List Area -->
+                <div id="other-list-area" class="list-area hidden">
+                    <div class="list-header">
+                        <button id="back-to-my-list" class="icon-btn text-btn">
+                            <i class="ph ph-arrow-left"></i> Retour à ma liste
+                        </button>
+                        <h3 id="other-user-title">Liste de ...</h3>
+                    </div>
+                    <div class="glass-card">
+                        <ul id="other-wishes" class="wish-list">
+                            <!-- Wishes will be injected here -->
+                        </ul>
+                        <div id="other-empty-state" class="empty-state hidden">
+                            <i class="ph ph-ghost"></i>
+                            <p>Cette liste est vide pour le moment.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
