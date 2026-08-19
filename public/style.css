@@ -136,7 +136,8 @@ h1, h2, h3 {
     font-size: 1.2rem;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
     width: 100%;
     background: rgba(15, 23, 42, 0.5);
     border: 1px solid var(--card-border);
@@ -149,7 +150,8 @@ input[type="text"] {
     transition: var(--transition);
 }
 
-input[type="text"]:focus {
+input[type="text"]:focus,
+input[type="password"]:focus {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
 }
@@ -296,13 +298,43 @@ button {
 
 .add-form {
     display: flex;
+    flex-direction: column;
     gap: 1rem;
     padding: 1rem;
     margin-bottom: 2rem;
 }
 
-.add-form input {
-    flex: 1;
+.add-form .form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.add-form input[type="text"],
+.add-form input[type="url"],
+.add-form textarea {
+    padding: 0.75rem 1rem;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--card-border);
+    border-radius: 0.75rem;
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.add-form input[type="text"]:focus,
+.add-form input[type="url"]:focus,
+.add-form textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.add-form textarea {
+    resize: vertical;
+    min-height: 60px;
+    font-size: 0.9rem;
 }
 
 .add-btn {
@@ -414,6 +446,201 @@ button {
 @keyframes snow {
     from { background-position: 0 0; }
     to { background-position: 0 1000px; }
+}
+
+/* Group Switcher */
+.group-switcher {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.group-switcher.hidden {
+    display: none !important;
+}
+
+.group-switcher button {
+    padding: 0.5rem 1rem;
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid var(--card-border);
+    border-radius: 0.75rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.group-switcher button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.group-switcher button.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* Badge "Ajouté par" */
+.added-by-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.75rem;
+    color: #8b5cf6;
+    background: rgba(139, 92, 246, 0.12);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 99px;
+    padding: 0.1rem 0.5rem;
+    margin-top: 0.25rem;
+    width: fit-content;
+}
+
+/* Modal Souhait Commun */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: floatIn 0.2s ease;
+}
+
+.modal-card {
+    width: 100%;
+    max-width: 420px;
+    margin: 1rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal-card h3 {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary);
+}
+
+.modal-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.modal-card select {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--card-border);
+    border-radius: 0.75rem;
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8' viewBox='0 0 256 256'%3E%3Cpath d='M213.66 101.66l-80 80a8 8 0 0 1-11.32 0l-80-80A8 8 0 0 1 53.66 90.34L128 164.69l74.34-74.35a8 8 0 0 1 11.32 11.32z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+    transition: var(--transition);
+}
+
+.modal-card select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.modal-card select option {
+    background: #1e293b;
+    color: var(--text-main);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.modal-actions .secondary-btn,
+.modal-actions .primary-btn {
+    flex: 1;
+}
+
+.modal-actions .primary-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Métadonnées souhait */
+.wish-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    width: 100%;
+}
+
+.wish-url {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: #60a5fa;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.wish-url:hover {
+    color: #93c5fd;
+    text-decoration: underline;
+}
+
+.wish-comment {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+/* Badge "réservé" (visible par le propriétaire du souhait) */
+.reserved-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.78rem;
+    color: #34d399;
+    background: rgba(52, 211, 153, 0.12);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    border-radius: 99px;
+    padding: 0.15rem 0.6rem;
+    margin-top: 0.25rem;
+    width: fit-content;
+}
+
+/* Badge souhait commun */
+.shared-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.78rem;
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 99px;
+    padding: 0.15rem 0.6rem;
+    margin-top: 0.25rem;
+    width: fit-content;
 }
 
 /* Responsive */

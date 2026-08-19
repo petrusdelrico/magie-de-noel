@@ -1,0 +1,41 @@
+{
+  "Testalpha1": [],
+  "Testalpha2": [],
+  "Testbeta1": [],
+  "Testbeta2": [],
+  "Pierre": [
+    {
+      "id": "1787147501882",
+      "name": "test",
+      "reservedBy": "Jeanine",
+      "sharedWith": "Gué"
+    }
+  ],
+  "Gué": [
+    {
+      "id": "1787147501882-mirror",
+      "name": "test",
+      "reservedBy": "Jeanine",
+      "sharedFrom": "Pierre",
+      "sharedSourceId": "1787147501882"
+    }
+  ],
+  "Lucien": [],
+  "Lison": [],
+  "Caroline": [],
+  "Julien": [],
+  "CharlesP": [],
+  "Jules": [],
+  "Gaspard": [],
+  "Jeanine": [],
+  "Philippe": [],
+  "Sarah": [],
+  "Raphael": [],
+  "Daniel": [],
+  "Yann": [],
+  "Clément": [],
+  "Charles": [],
+  "Mathilde": [],
+  "Léandre": [],
+  "Charlotte": []
+}

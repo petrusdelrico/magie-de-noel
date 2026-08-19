@@ -1,0 +1,37 @@
+[
+  {
+    "id": "testgroup1",
+    "name": "Groupe Test Alpha",
+    "members": ["Testalpha1", "Testalpha2"]
+  },
+  {
+    "id": "testgroup2",
+    "name": "Groupe Test Beta",
+    "members": ["Testbeta1", "Testbeta2"]
+  },
+  {
+    "id": "pierreetcie",
+    "name": "Groupe Pierre",
+    "members": ["Pierre", "Gué", "Lucien", "Lison"]
+  },
+  {
+    "id": "carolineetcie",
+    "name": "Groupe Caroline",
+    "members": ["Caroline", "Julien", "CharlesP", "Jules", "Gaspard"]
+  },
+  {
+    "id": "jeanineetphilippe",
+    "name": "Groupe Jeanine",
+    "members": ["Jeanine", "Philippe"]
+  },
+  {
+    "id": "sarahetcie",
+    "name": "Groupe Sarah",
+    "members": ["Sarah", "Raphael", "Daniel", "Yann", "Clément"]
+  },
+  {
+    "id": "charlesetcie",
+    "name": "Groupe Charles",
+    "members": ["Charles", "Mathilde", "Léandre", "Charlotte"]
+  }
+]

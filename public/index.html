@@ -39,6 +39,11 @@
                         <input type="text" id="username-input" placeholder="Entrez votre pseudo" required
                             autocomplete="off" />
                     </div>
+                    <div class="input-group">
+                        <i class="ph ph-lock"></i>
+                        <input type="password" id="password-input" placeholder="Mot de passe" required
+                            autocomplete="current-password" />
+                    </div>
                     <button type="submit" class="primary-btn">
                         <span>Entrer</span>
                         <i class="ph ph-arrow-right"></i>
@@ -54,6 +59,7 @@
                     <i class="ph-fill ph-tree-evergreen tree-icon"></i>
                     <h2>Noël de <span id="current-user-display"></span></h2>
                 </div>
+                <div id="group-switcher" class="group-switcher hidden"></div>
                 <div class="header-right" style="display: flex; gap: 0.5rem; align-items: center;">
                     <button id="my-reservations-btn" class="secondary-btn"
                         style="padding: 0.5rem 1rem; border-color: transparent;">Mes Réservations</button>
@@ -64,20 +70,12 @@
             </header>
 
             <main class="dashboard-content">
-                <!-- Search Bar -->
-                <div class="search-container glass-card">
-                    <form id="search-form" class="search-form">
-                        <i class="ph ph-magnifying-glass"></i>
-                        <input type="text" id="search-input" placeholder="Chercher la liste d'un ami (ex: Alice)"
-                            autocomplete="off" />
-                        <button type="submit" class="secondary-btn">Chercher</button>
-                    </form>
-                    <div style="text-align: center; margin-top: 1rem;">
-                        <button id="show-all-users-btn" class="secondary-btn"
-                            style="width: auto; display: inline-flex; align-items: center; gap: 0.5rem; background: transparent; border-color: transparent;">
-                            <i class="ph ph-users"></i> Voir tout l'annuaire
-                        </button>
-                    </div>
+                <!-- Annuaire -->
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <button id="show-all-users-btn" class="secondary-btn"
+                        style="width: auto; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        <i class="ph ph-users"></i> Voir la liste des membres
+                    </button>
                 </div>
 
                 <!-- All Users Area (Hidden by default) -->
@@ -113,12 +111,20 @@
                 <!-- My List Area -->
                 <div id="my-list-area" class="list-area active">
                     <div class="list-header">
-                        <h3>Ma Liste de Souhaits</h3>
+                        <h3 id="my-list-title">Ma Liste de Souhaits</h3>
+                        <a id="export-btn" href="/api/admin/export" download class="secondary-btn"
+                            style="display:none; align-items:center; gap:0.5rem; text-decoration:none; padding:0.5rem 1rem;">
+                            <i class="ph ph-download-simple"></i> Exporter les données
+                        </a>
                     </div>
 
                     <form id="add-item-form" class="glass-card add-form">
-                        <input type="text" id="item-name" placeholder="Qu'est-ce qui vous ferait plaisir ?" required
-                            autocomplete="off" />
+                        <div class="form-fields">
+                            <input type="text" id="item-name" placeholder="Qu'est-ce qui vous ferait plaisir ?" required
+                                autocomplete="off" />
+                            <input type="url" id="item-url" placeholder="Lien (optionnel)" autocomplete="off" />
+                            <textarea id="item-comment" placeholder="Commentaire (optionnel)" rows="2"></textarea>
+                        </div>
                         <button type="submit" class="primary-btn add-btn">
                             <i class="ph ph-plus"></i>
                             Ajouter
@@ -151,6 +157,23 @@
 
             </main>
         </section>
+    </div>
+
+    <!-- Modal Souhait Commun -->
+    <div id="share-modal" class="modal-overlay hidden">
+        <div class="modal-card glass-card">
+            <h3><i class="ph-fill ph-users"></i> Souhait commun</h3>
+            <p>Associer ce souhait à un autre membre. Le cadeau sera réservé pour vous deux.</p>
+            <form id="share-form">
+                <select id="share-partner-select" required>
+                    <!-- Peuplé dynamiquement par app.js -->
+                </select>
+                <div class="modal-actions">
+                    <button type="button" id="share-cancel-btn" class="secondary-btn">Annuler</button>
+                    <button type="submit" id="share-submit-btn" class="primary-btn">Associer</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script src="app.js"></script>
