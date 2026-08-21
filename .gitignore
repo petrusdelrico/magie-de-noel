@@ -1,3 +1,6 @@
 node_modules/
 subscriptions.json
 vapid.json
+database.json
+.env
+serviceAccountKey.json

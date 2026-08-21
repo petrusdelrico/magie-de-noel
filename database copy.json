@@ -1,0 +1,25 @@
+{
+  "Bob": [
+    {
+      "id": "1786975260663",
+      "name": "CadoA2",
+      "reservedBy": "Pierre",
+      "sharedWith": "Alice"
+    }
+  ],
+  "Alice": [
+    {
+      "id": "1786975260663-mirror",
+      "name": "CadoA2",
+      "reservedBy": "Pierre",
+      "sharedFrom": "Bob",
+      "sharedSourceId": "1786975260663"
+    }
+  ],
+  "Pierre": [],
+  "Gué": [],
+  "Testalpha2": [],
+  "Testalpha1": [],
+  "Testbeta1": [],
+  "Testbeta2": []
+}

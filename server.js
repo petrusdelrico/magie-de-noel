@@ -1,12 +1,14 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs').promises;
 const path = require('path');
 const crypto = require('crypto');
+const { readDB, writeDB } = require('./firestore');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DB_FILE = path.join(__dirname, 'database.json');
 const GROUPS_FILE = path.join(__dirname, 'groups.json');
 const USERS_CONFIG_FILE = path.join(__dirname, 'users-config.json');
 
@@ -38,25 +40,6 @@ fs.readFile(USERS_CONFIG_FILE, 'utf8')
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Helper pour lire la DB
-async function readDB() {
-    try {
-        const data = await fs.readFile(DB_FILE, 'utf8');
-        return JSON.parse(data);
-    } catch (err) {
-        // Si le fichier n'existe pas, on retourne un objet vide
-        if (err.code === 'ENOENT') {
-            return {};
-        }
-        throw err;
-    }
-}
-
-// Helper pour sauvegarder la DB
-async function writeDB(data) {
-    await fs.writeFile(DB_FILE, JSON.stringify(data, null, 2), 'utf8');
-}
 
 // Migration (pour s'assurer que tous les souhaits sont des objets)
 async function migrateDB(db) {
@@ -428,11 +411,11 @@ app.get('/api/users/:username/reservations', async (req, res) => {
 // 11. Exporter la base de données (réservé à l'administrateur)
 app.get('/api/admin/export', async (req, res) => {
     try {
-        const data = await fs.readFile(DB_FILE, 'utf8');
+        const data = await readDB();
         const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Content-Disposition', `attachment; filename="database-${date}.json"`);
-        res.send(data);
+        res.send(JSON.stringify(data, null, 2));
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
