@@ -18,15 +18,15 @@ IMAGE="europe-west1-docker.pkg.dev/$PROJECT_ID/magie-de-noel/$SERVICE"
 echo -e "${CYAN}=== Déploiement Magie de Noël sur Cloud Run ===${NC}"
 
 # 1. Configurer le projet gcloud
-echo -e "\n${YELLOW}[1/7] Configuration du projet gcloud...${NC}"
+echo -e "\n${YELLOW}[1/5] Configuration du projet gcloud...${NC}"
 gcloud config set project "$PROJECT_ID"
 
 # 2. Activer les APIs nécessaires
-echo -e "\n${YELLOW}[2/7] Activation des APIs Cloud Run et Artifact Registry...${NC}"
+echo -e "\n${YELLOW}[2/5] Activation des APIs Cloud Run et Artifact Registry...${NC}"
 gcloud services enable run.googleapis.com artifactregistry.googleapis.com
 
 # 3. Créer le dépôt Artifact Registry (si inexistant)
-echo -e "\n${YELLOW}[3/7] Création du dépôt Artifact Registry...${NC}"
+echo -e "\n${YELLOW}[3/5] Création du dépôt Artifact Registry...${NC}"
 if gcloud artifacts repositories create magie-de-noel \
     --repository-format=docker \
     --location="$REGION" \
@@ -38,31 +38,24 @@ else
 fi
 
 # 4. Authentifier Docker auprès de Google
-echo -e "\n${YELLOW}[4/7] Authentification Docker...${NC}"
+echo -e "\n${YELLOW}[4/5] Authentification Docker...${NC}"
 gcloud auth configure-docker "$REGION-docker.pkg.dev" --quiet
 
 # 5. Build et push de l'image
-echo -e "\n${YELLOW}[5/7] Build et push de l'image Docker...${NC}"
+echo -e "\n${YELLOW}[5/5] Build et push de l'image Docker...${NC}"
 docker build -t "$IMAGE" .
 docker push "$IMAGE"
 
 # 6. Déployer sur Cloud Run
-echo -e "\n${YELLOW}[6/7] Déploiement sur Cloud Run...${NC}"
+echo -e "\n${YELLOW}[6/6] Déploiement sur Cloud Run...${NC}"
 gcloud run deploy "$SERVICE" \
     --image="$IMAGE" \
     --region="$REGION" \
     --platform=managed \
+    --allow-unauthenticated \
     --port=8080 \
-    --set-env-vars="FIRESTORE_PROJECT_ID=$PROJECT_ID" \
-    --service-account="magie-de-noel-server@$PROJECT_ID.iam.gserviceaccount.com" \
-    --no-allow-unauthenticated
-
-# 7. Autoriser l'accès public (sans Secret Manager)
-echo -e "\n${YELLOW}[7/7] Autorisation accès public...${NC}"
-gcloud run services add-iam-policy-binding "$SERVICE" \
-    --region="$REGION" \
-    --member="allUsers" \
-    --role="roles/run.invoker"
+    --set-secrets="FIRESTORE_PROJECT_ID=FIRESTORE_PROJECT_ID:latest" \
+    --service-account="magie-de-noel-server@$PROJECT_ID.iam.gserviceaccount.com"
 
 echo -e "\n${GREEN}=== Déploiement terminé ===${NC}"
 echo "URL du service :"

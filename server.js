@@ -66,12 +66,28 @@ app.get('/api/users/:username/wishes', async (req, res) => {
         db = await migrateDB(db);
 
         const reqUsername = req.params.username.toLowerCase();
+        const requester = (req.query.requester || '').toLowerCase();
 
         // Recherche insensible à la casse
         const userKey = Object.keys(db).find(k => k.toLowerCase() === reqUsername);
 
         if (userKey) {
-            res.json({ username: userKey, wishes: db[userKey] });
+            // Masquer reservedBy pour le propriétaire de la liste :
+            // - Si le requester est le propriétaire (il consulte sa propre liste)
+            // - Si le souhait est un souhait commun dont le requester est l'émetteur (sharedFrom === requester)
+            const wishes = db[userKey].map(wish => {
+                const isOwner = requester && requester === reqUsername;
+                const isOriginalSharer = requester && wish.sharedFrom &&
+                    wish.sharedFrom.toLowerCase() === requester;
+                if (isOwner || isOriginalSharer) {
+                    return { ...wish, reservedBy: null };
+                }
+                return wish;
+            });
+            const ownerConfig = Object.entries(usersConfig)
+                .find(([k]) => k.toLowerCase() === reqUsername);
+            const isKids = ownerConfig ? ownerConfig[1].kids === true : false;
+            res.json({ username: userKey, wishes, kids: isKids });
         } else {
             res.status(404).json({ error: "Utilisateur non trouvé" });
         }

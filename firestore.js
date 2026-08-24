@@ -149,4 +149,13 @@ async function writeDB(data) {
     }
 }
 
-module.exports = { readDB, writeDB };
+// ─── Sélection du backend selon USE_JSON ─────────────────────────────────────
+
+if (process.env.USE_JSON === 'true') {
+    // Mode JSON pur : Firestore n'est jamais initialisé
+    console.log('[DB] Mode JSON pur — Firestore désactivé');
+    module.exports = { readDB: readFromFile, writeDB: writeToFile };
+} else {
+    // Mode par défaut : Firestore avec fallback JSON
+    module.exports = { readDB, writeDB };
+}

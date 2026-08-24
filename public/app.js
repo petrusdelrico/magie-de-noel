@@ -66,7 +66,7 @@ async function renderMyList() {
     try {
         // Charger la liste de currentEditTarget (pas currentUser)
         const targetUser = currentEditTarget || currentUser;
-        const res = await fetch(`${API_BASE}/users/${targetUser}/wishes`);
+        const res = await fetch(`${API_BASE}/users/${targetUser}/wishes?requester=${encodeURIComponent(currentUser)}`);
         if (!res.ok) throw new Error('Erreur réseau');
         const data = await res.json();
         const myWishes = data.wishes || [];
@@ -163,7 +163,7 @@ async function renderMyList() {
 
 async function renderOtherList(username) {
     try {
-        const res = await fetch(`${API_BASE}/users/${username}/wishes`);
+        const res = await fetch(`${API_BASE}/users/${username}/wishes?requester=${encodeURIComponent(currentUser)}`);
 
         if (res.status === 404) {
             showToast(`L'utilisateur "${username}" n'a pas encore de liste.`);
@@ -172,6 +172,7 @@ async function renderOtherList(username) {
 
         const data = await res.json();
         const userKey = data.username;
+        const ownerIsKids = data.kids === true;
         const theirWishes = data.wishes || [];
 
         otherUserTitle.textContent = `Liste de ${userKey}`;
@@ -186,10 +187,19 @@ async function renderOtherList(username) {
                 li.className = 'wish-item';
 
                 let actionHtml = '';
-                if (!wish.reservedBy) {
+                // Masquer le bouton Réserver si c'est un souhait commun auquel l'utilisateur est lié
+                const isSharedWithCurrentUser = wish.sharedWith === currentUser || wish.sharedFrom === currentUser;
+                
+                if (isSharedWithCurrentUser) {
+                    // Souhait commun : pas d'action de réservation possible
+                    actionHtml = `<span style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;"><i class="ph ph-users"></i> Souhait commun</span>`;
+                } else if (!wish.reservedBy) {
                     actionHtml = `<button class="secondary-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;" onclick="reserveWish('${userKey}', ${index})">Réserver</button>`;
                 } else if (wish.reservedBy === currentUser) {
                     actionHtml = `<button class="secondary-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; border-color: var(--primary); color: var(--primary);" onclick="unreserveWish('${userKey}', ${index})">Annuler réservation</button>`;
+                } else if (ownerIsKids) {
+                    // Propriétaire kids=true : révéler qui a réservé
+                    actionHtml = `<span style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;"><i class="ph-fill ph-lock-key"></i> Réservé par ${wish.reservedBy}</span>`;
                 } else {
                     actionHtml = `<span style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;"><i class="ph-fill ph-lock-key"></i> Déjà réservé</span>`;
                 }
