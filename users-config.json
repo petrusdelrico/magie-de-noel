@@ -22,5 +22,5 @@
   "Charles":   { "password": "f1205b47ffb27559ccdf507df859e55f6e1bfb382dcc0891f95bdc3064d4438d" },
   "Mathilde":  { "password": "c52c4fb88926f84bcbc39459fb74792f00032309d52aa2f242741702958003cc" },
   "Léandre":   { "kids": true, "password": "794b25a56df17fff2ca47b0fdbc35ba76ab6dfa562e57ed1d4df6833bfb8428d" },
-  "Charlotte": { "kids": true, "password": "794b25a56df17fff2ca47b0fdbc35ba76ab6dfa562e57ed1d4df6833bfb8428d"" }
+  "Charlotte": { "kids": true, "password": "794b25a56df17fff2ca47b0fdbc35ba76ab6dfa562e57ed1d4df6833bfb8428d" }
 }
